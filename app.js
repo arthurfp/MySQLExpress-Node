@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var api = require('./api/api');
+var User = require('./api/User');
 
 var app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api', api);
+app.use('/user', User);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
@@ -27,7 +27,7 @@ app.use(function(err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
     // res.render('error');
-    res.send("The requested address does not exist")
+    res.send({ "success": false, "data": {}, "msg": "The requested address does not exist" });
 });
 
 module.exports = app;

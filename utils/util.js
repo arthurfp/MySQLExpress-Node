@@ -31,9 +31,7 @@ var util = {
      * @returns {boolean}
      */
     isEmpty: function(data) {
-        console.log(data)
         if (data == {} || data == "{}" || data == "[]" || data == [] || data == "" || data == " " || data == null || data == "null" || data == "undefined" || data == undefined) {
-            console.log("111")
             return true;
         };
         return false;

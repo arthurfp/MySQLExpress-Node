@@ -1,6 +1,6 @@
 var UserData = {
     queryUserData: function(param) {
-        return "select * from user_data where USERNAME = '" + param.user + "'";
+        return "select USERNAME as userName,TITLE as title,CONTENT as content,EDITTIME as editTime  from user_data where USERNAME = '" + param.user + "'";
     },
     deleteData: function(param) {
         return "DELETE from user_data where ID = " + param.ID;

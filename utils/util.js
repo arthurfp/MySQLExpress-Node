@@ -1,17 +1,17 @@
-var util = {
+const util = {
     /**
      * Format time
      * @param：data
      * @returns yyyy-mm-dd
      */
-    CurentTime: function(param) {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth() + 1;
-        var day = now.getDate();
-        var hh = now.getHours();
-        var mm = now.getMinutes();
-        var clock = year + "-";
+    CurentTime: function (param) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hh = now.getHours();
+        const mm = now.getMinutes();
+        const clock = year + "-";
         if (month < 10)
             clock += "0";
         clock += month + "-";
@@ -30,7 +30,7 @@ var util = {
      * @param：data
      * @returns {boolean}
      */
-    isEmpty: function(data) {
+    isEmpty: function (data) {
         if (data == {} || data == "{}" || data == "[]" || data == [] || data == "" || data == " " || data == null || data == "null" || data == "undefined" || data == undefined) {
             return true;
         };

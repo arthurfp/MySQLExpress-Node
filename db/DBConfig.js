@@ -2,8 +2,8 @@
     mysql: {
         host: 'localhost',
         user: 'root',
-        password: '123456',
-        database: 'test',
+        password: 'pass',
+        database: 'notes',
         port: 3306
     }
 };

@@ -1,60 +1,98 @@
-var express = require('express');
-var router = express.Router();
-var url = require('url');
-var mysql = require('mysql');
-var dbconfig = require('../db/DBConfig');
-var user = require('../sql/Usersql');
-var util = require('../utils/util');
-var pool = mysql.createPool(dbconfig.mysql);
+const express = require('express');
+const router = express.Router();
+const url = require('url');
+const mysql = require('mysql');
+const dbconfig = require('../db/DBConfig');
+const user = require('../sql/Usersql');
+const util = require('../utils/util');
+// Create a MySQL connection pool using the configuration information of DBConfig.js
+const pool = mysql.createPool(dbconfig.mysql);
 
-/* POST users listing. */
-router.post('/login', function(req, res, next) {
-    let params = {
+// User Login
+router.post('/login', function (req, res, next) {
+    const params = {
         user: req.body.user,
         pwd: req.body.pwd
     };
-    pool.getConnection(function(err, connection) {
-        connection.query(user.queryUserName(params), function(err, results) {
-            if (util.isEmpty(results)) {
-                connection.query(user.queryUNP(params), function(err, result) {
+    // Enable connection pool query
+    pool.getConnection(function (err, connection) {
+        // Check if the username exists
+        connection.query(user.queryUserName(params), function (err, results) {
+            console.log(results)
+            if (!util.isEmpty(results)) {
+                // Query whether the username and password are correct
+                connection.query(user.queryUNP(params), function (err, result) {
                     if (util.isEmpty(result)) {
-                        res.send({ "success": false, "data": {}, "msg": "Request parameter error" });
+                        res.send({
+                            "success": false,
+                            "data": {},
+                            "msg": "Incorrect username or password"
+                        });
                     } else {
                         if (result.length == 1) {
-                            res.send({ "success": true, "data": {}, "msg": "login successful" });
+                            res.send({
+                                "success": true,
+                                "data": {},
+                                "msg": "Successfully logged in"
+                            });
                         } else {
-                            res.send({ "success": false, "data": {}, "msg": "wrong user name or password" });
+                            res.send({
+                                "success": false,
+                                "data": {},
+                                "msg": "Incorrect username or password"
+                            });
                         }
                     }
                 });
                 connection.release();
             } else {
-                res.send({ "success": false, "data": {}, "msg": "Username does not exist" });
+                res.send({
+                    "success": false,
+                    "data": {},
+                    "msg": "Username does not exist"
+                });
             }
         });
     })
 });
-router.post('/registered', function(req, res, next) {
-    let params = {
+
+// Register User
+router.post('/registered', function (req, res, next) {
+    const params = {
         user: req.body.user,
         pwd: req.body.pwd,
         headimg: req.body.headimg || '',
         addtime: util.CurentTime(),
         edittime: util.CurentTime()
     };
-    pool.getConnection(function(err, connection) {
-        connection.query(user.queryUserName(params), function(err, results) {
+    // Enable connection pool query
+    pool.getConnection(function (err, connection) {
+        // Check if the username exists
+        connection.query(user.queryUserName(params), function (err, results) {
             if (util.isEmpty(results)) {
-                connection.query(user.insertData(params), function(err, result) {
+                // Insert username and password
+                connection.query(user.insertData(params), function (err, result) {
                     if (!util.isEmpty(result)) {
-                        res.send({ "success": true, "data": {}, "msg": "registration success" });
+                        res.send({
+                            "success": true,
+                            "data": {},
+                            "msg": "Success"
+                        });
                     } else {
-                        res.send({ "success": false, "data": {}, "msg": "Parameter input is invalid" });
+                        res.send({
+                            "success": false,
+                            "data": {},
+                            "msg": "Invalid parameter input"
+                        });
                     }
                 });
                 connection.release();
             } else {
-                res.send({ "success": false, "data": {}, "msg": "username already exists" });
+                res.send({
+                    "success": false,
+                    "data": {},
+                    "msg": "Username already exists"
+                });
             }
         });
     });

@@ -1,14 +1,12 @@
 /**
  * Format data
  */
-function format(type, data, msg) {
-    return res.send({
-        "success": type,
-        "data": data,
-        "msg": "msg"
-    });
+function format(type, data, res) {
+  return res.send({
+    success: type,
+    data,
+    msg: 'msg',
+  });
 }
 
-
-
-exports = module.exports = format;
+module.exports = format;
